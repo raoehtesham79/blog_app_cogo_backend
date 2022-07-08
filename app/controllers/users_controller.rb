@@ -1,19 +1,7 @@
 class UsersController < ApplicationController
     protect_from_forgery with: :null_session
     def usersList
-        data =[{
-            "name"=>"rao",
-            "age"=>22
-        },
-        {
-            "name"=>"rao",
-            "age"=>22
-        },
-        {
-            "name"=>"rao",
-            "age"=>22
-        }
-        ]
+        data = User.all
         render json: data
     end
     def addUser
@@ -22,8 +10,28 @@ class UsersController < ApplicationController
             "user_email"=>params[:user_email],
             "user_password"=>params[:user_password]
         })
-
         data.save
         render json: params
     end
+    def login
+        user = User.find_by(user_email: params['user_email'])
+        if(user)
+            if(user.user_password == params['user_password'])
+                render json: user
+            else
+                message={
+                    "text"=>"Wrong Credentils"
+                }
+                render json: message
+            end
+        else
+            message={
+                    "text"=>"Wrong Credentils"
+                }
+                render json: message
+        end        
+    end
+    # login rails 
+    # 
+
 end

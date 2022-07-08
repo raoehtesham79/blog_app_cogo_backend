@@ -5,7 +5,10 @@ class BlogsController < ApplicationController
         data =Blog.all
         render json: data
     end
-
+    def searchBlog
+        data =Blog.where("blog_title LIKE?","%"+params[:blog_title]+"%")
+        render json: data
+    end
     def addBlog
         data=Blog.new({
             "blog_title"=>params[:blog_title],
@@ -32,6 +35,7 @@ class BlogsController < ApplicationController
         data.update(
             "blog_title"=>params[:blog_title],
             "blog_descp"=>params[:blog_descp],
+            "image_url"=>params[:image_url],
             "users_id"=>params[:users_id]
         )
         render json: data
